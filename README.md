@@ -1,0 +1,120 @@
+<center>
+<img src = 'https://s3.bmp.ovh/imgs/2023/07/21/a43006f865b8eaf7.png' >
+<h2>欢迎使用SovitsBox</h2>
+<h3>SovitsBox服务端文档（SovitsBoxAPI）</h3>
+</center>
+
+
+## 简介
+
+SovitsBox——让小白也会推理Sovits模型
+
+SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。原理类似于网络API
+
+## 前期准备
+
+1. 克隆存储库
+
+还可以下载zip，看你心情
+
+`git clone https://github.com/wangs-official/sovitsbox-api.git`
+
+2. 安装库
+
+建议您先创建一个Conda环境（怎么创建自己搜）防止库冲突出现问题
+
+然后，切换到conda环境内，并cd到Sovits根目录，执行该命令安装库
+
+`pip3 install -r requirements.txt `
+
+> 注意：pip可能会出现找不到版本的问题，请尝试更换pip源（阿里源，华为源等）
+
+安装后，直接输入`python start.py`启动，根据界面提示打开服务端
+
+> 启动器会检测库是否正确安装，若报错，请使用`pip3 install xxx`安装缺失的库
+
+## API文档
+
+均使用GET方式请求，请求地址：
+
+- Sovits3.0服务端 127.0.0.1:65503
+- Sovits4.0服务端 127.0.0.1:65504
+
+1. 状态
+
+用于检测服务端是否启动
+
+请求地址 `/`
+
+参数：无
+
+正常返回值：
+
+|  KEY   | VALUE |  TYPE  | 兼容性  |
+| :----: | :---: | :----: | :-----: |
+| status | 状态  | string | 3.0/4.0 |
+
+
+
+2. 下载hubert模型文件
+
+用于下载Hubert模型文件
+
+请求地址`/download_hubert`
+
+参数：
+
+|   KEY    | VALUE | TYPE | 兼容性  | 是否必选 |
+| :------: | :---: | :--: | :-----: | :------: |
+| download | True  | bool | 3.0/4.0 |    是    |
+
+例子：`127.0.0.1:65503/download_hubert?download=true`
+
+返回值
+
+正常返回值：
+
+|       KEY       | VALUE |  TYPE  | 兼容性  |
+| :-------------: | :---: | :----: | :-----: |
+| download_status |  OK   | string | 3.0/4.0 |
+
+异常返回值：
+
+|     KEY     |       VALUE        |  TYPE  | 兼容性  |
+| :---------: | :----------------: | :----: | :-----: |
+| PythonError | Python执行错误返回 | string | 3.0/4.0 |
+
+
+
+3. 加载模型
+
+请先加载模型再进行推理！
+
+请求地址 `/loadmodel`
+
+参数：
+
+|    KEY     |      VALUE      |  TYPE  | 兼容性  | 是否必选 |
+| :--------: | :-------------: | :----: | :-----: | :------: |
+| model_path |    模型路径     | string | 3.0/4.0 |    是    |
+| json_path  | config.json路径 | string | 3.0/4.0 |    是    |
+
+返回值
+
+正常返回值：
+
+|    KEY     |   VALUE    |  TYPE  | 兼容性  |
+| :--------: | :--------: | :----: | :-----: |
+|   status   |     OK     | string | 3.0/4.0 |
+| speaker_ls | 说话人列表 | String | 3.0/4.0 |
+
+异常返回值：
+
+|         KEY         |                            VALUE                             |  TYPE  | 兼容性  |
+| :-----------------: | :----------------------------------------------------------: | :----: | :-----: |
+|     PythonError     |                      Python执行错误返回                      | string | 3.0/4.0 |
+| HubertNotFoundError | hubert模型不存在，请访问URL：http://127.0.0.1:65503/download_hubert?download=true 下载 | string |   3.0   |
+| HubertNotFoundError | hubert模型不存在，请访问URL：http://127.0.0.1:65504/download_hubert?download=true 下载 | string |   4.0   |
+|        Error        |                         通用错误返回                         | string | 3.0/4.0 |
+
+## 开发中...
