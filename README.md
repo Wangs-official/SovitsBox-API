@@ -17,6 +17,8 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 还可以下载zip，看你心情
 
+下载zip用不了更新功能
+
 `git clone https://github.com/wangs-official/sovitsbox-api.git`
 
 2. 安装库
@@ -34,6 +36,15 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 同样的，若要使用Sovits4.0版本的服务端，请在终端执行`cd v4` 后 `python app.py`
 
 > 若报错ModuleNotFoundError，请使用`pip3 install xxx`安装缺失的库
+
+## 快速更新
+
+在根目录执行 `python update.py`来更新，请勿更改 update/ver.json 以及 update/tmp/ver.json 内的任何内容，出事不管哦
+
+```
+调用系统git pull origin命令，如果仓库不是克隆下来的话，就不要用了
+请提前备份raw/results文件夹内所有内容以及hubert模型文件，丢了不管
+```
 
 ## API文档
 
@@ -154,9 +165,9 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 5.  上传wav文件到raw目录
 
-我感觉小白不会删文件所以就写了这个接口
+没用
 
-请求地址 `/delete_file`
+请求地址 `/upload_wav`
 
 参数：
 
