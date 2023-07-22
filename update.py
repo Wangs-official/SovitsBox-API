@@ -2,7 +2,8 @@ import os
 import json
 import wget
 # 更新文件，版本号在update文件夹内的ver.json内
-os.remove('update/tmp/ver.json')
+if os.path.isfile('update/tmp/ver.json'):
+    os.remove('update/tmp/ver.json')
 wget.download('https://raw.githubusercontent.com/Wangs-official/SovitsBox-API/main/update/ver.json',out='update/tmp/ver.json')
 # 下载Github上的版本号文件
 
