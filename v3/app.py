@@ -36,6 +36,7 @@ time.sleep(3)
 
 print("正在加载库")
 from flask import Flask, jsonify , request
+import shutil
 import json
 import wget
 import colorama
@@ -95,15 +96,21 @@ def loadmodel():
     model_path = request.args.get('model_path')
     json_path = request.args.get('json_path')
     try:
-        if os.path.isfile(model_path) and model_path.endswith('pth'):  # 验证文件路径以及后缀名
-            print("服务端:已导入模型文件 路径:" + model_path)
-        else:
-            return jsonify({'Error' : '目标文件不存在/非pth文件'})
+        if not model_path is None:
+            if not json_path is None:
+                if os.path.isfile(model_path) and model_path.endswith('pth'):  # 验证文件路径以及后缀名
+                    print("服务端:已导入模型文件 路径:" + model_path)
+                else:
+                    return jsonify({'FileError' : '目标文件不存在/非pth文件'})
 
-        if os.path.isfile(json_path) and json_path.endswith('json'): # 验证文件路径以及后缀名
-            print('服务端:已导入Config文件' + json_path)
+                if os.path.isfile(json_path) and json_path.endswith('json'): # 验证文件路径以及后缀名
+                    print('服务端:已导入Config文件' + json_path)
+                else:
+                    return jsonify({'FileError' : '目标文件不存在/非json文件'})
+            else:
+                return jsonify({'Error': '不是有效的参数'})
         else:
-            return jsonify({'Error' : '目标文件不存在/非json文件'})
+            return jsonify({'Error': '不是有效的参数'})
 
         # 加载模型与创建文件夹
         svc_model = Svc(model_path, json_path)
@@ -131,6 +138,55 @@ def loadmodel():
         print("服务端:Python发生错误：" + str(e))
         return jsonify({'PythonError': str(e)})
 
+# 删除raw/results文件夹内的所有文件
+# 用法：GET请求
+# 请求参数
+# KEY:del VALUE:raw/results TYPE:string 必须
+@app.route('/delete_file', methods=['GET'])
+def delete_file():
+    try:
+        delete_file_path = request.args.get('del')
+        if delete_file_path == str('raw'):
+            #删除raw文件夹
+            shutil.rmtree('raw' , ignore_errors=True)
+            infer_tool.mkdir(["raw"])
+            print('服务端:文件夹 raw 内的文件已被删除')
+            return jsonify({'status' : 'OK' , 'del_path' : 'raw'})
+        elif delete_file_path == str('results'):
+            #删除results文件夹
+            shutil.rmtree('results' , ignore_errors=True)
+            infer_tool.mkdir(["results"])
+            print('服务端:文件夹 results 内的文件已被删除')
+            return jsonify({'status' : 'OK' , 'del_path' : 'results'})
+        else:
+            return jsonify({'Error': '不是有效的参数'})
+
+    except Exception as e:
+        # 如果发生错误，返回异常信息
+        print("服务端:Python发生错误：" + str(e))
+        return jsonify({'PythonError': str(e)})
+
+# 上传wav文件到raw目录
+# 用法：GET请求
+# 请求参数
+# KEY:wav_path VALUE:wav文件路径 TYPE:string 必须
+@app.route('/upload_wav' , methods=['get'])
+def upload_wav():
+    try:
+        wav_path_upload = request.args.get('wav_path')
+        if not wav_path_upload is None:
+            if os.path.isfile(wav_path_upload) and wav_path_upload.endswith('wav'):
+                shutil.copy(wav_path_upload, 'raw')
+                return jsonify({'status':'OK','upload_file_path': wav_path_upload})
+            else:
+                return jsonify({'FileError': '目标文件不存在/非wav文件'})
+        else:
+            return jsonify({'Error': '不是有效的参数'})
+
+    except Exception as e:
+        # 如果发生错误，返回异常信息
+        print("服务端:Python发生错误：" + str(e))
+        return jsonify({'PythonError': str(e)})
 
 if __name__=='__main__':
     app.run(host='127.0.0.1', port=65503)  # 默认走65503端口，4.0走65504端口

@@ -14,7 +14,7 @@ import soundfile
 import torch
 import torchaudio
 
-from hubert import hubert_model
+from v3.hubert import hubert_model
 import utils
 from models import SynthesizerTrn
 logging.getLogger('numba').setLevel(logging.WARNING)
