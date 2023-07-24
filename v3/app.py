@@ -36,6 +36,7 @@ time.sleep(3)
 
 print("正在加载库")
 from flask import Flask, jsonify , request
+import werkzeug
 import shutil
 import json
 import wget
@@ -52,6 +53,15 @@ import soundfile
 from inference import infer_tool
 from inference import slicer
 from inference.infer_tool import Svc
+
+# 自定义HTTP错误子类
+class InsufficientStorage(werkzeug.exceptions.HTTPException):
+    code=800
+    description = 'exception return'
+
+class InsufficientStorage(werkzeug.exceptions.HTTPException):
+    code=801
+    description = 'parametric error'
 
 print('库加载完成，正在启动...')
 
@@ -83,7 +93,7 @@ def download_hubert():
         except Exception as e:
             # 如果发生错误，返回异常信息
             print("服务端:Python发生错误：" + str(e))
-            return jsonify({'PythonError': str(e)})
+            return jsonify({'PythonError': str(e)}) , 800
 
 
 # 加载模型接口
@@ -101,16 +111,16 @@ def loadmodel():
                 if os.path.isfile(model_path) and model_path.endswith('pth'):  # 验证文件路径以及后缀名
                     print("服务端:已导入模型文件 路径:" + model_path)
                 else:
-                    return jsonify({'FileError' : '目标文件不存在/非pth文件'})
+                    return jsonify({'FileError' : '目标文件不存在/非pth文件'}) , 800
 
                 if os.path.isfile(json_path) and json_path.endswith('json'): # 验证文件路径以及后缀名
                     print('服务端:已导入Config文件' + json_path)
                 else:
-                    return jsonify({'FileError' : '目标文件不存在/非json文件'})
+                    return jsonify({'FileError' : '目标文件不存在/非json文件'}) , 800
             else:
-                return jsonify({'Error': '不是有效的参数'})
+                return jsonify({'Error': '不是有效的参数'}) , 801
         else:
-            return jsonify({'Error': '不是有效的参数'})
+            return jsonify({'Error': '不是有效的参数'}) , 801
 
         # 加载模型与创建文件夹
         svc_model = Svc(model_path, json_path)
@@ -131,12 +141,12 @@ def loadmodel():
     except FileNotFoundError:
         # 如果Hubert文件不存在，那就特殊报错（？）
         print("服务端:hubert模型不存在，请访问URL：http://127.0.0.1:65503/download_hubert?download=true 下载")
-        return jsonify({'HubertNotFoundError': 'hubert模型不存在，请访问URL：http://127.0.0.1:65503/download_hubert?download=true 下载'})
+        return jsonify({'HubertNotFoundError': 'hubert模型不存在，请访问URL：http://127.0.0.1:65503/download_hubert?download=true 下载'}) , 800
 
     except Exception as e:
         # 如果发生错误，返回异常信息
         print("服务端:Python发生错误：" + str(e))
-        return jsonify({'PythonError': str(e)})
+        return jsonify({'PythonError': str(e)}) , 800
 
 # 删除raw/results文件夹内的所有文件
 # 用法：GET请求
@@ -159,12 +169,12 @@ def delete_file():
             print('服务端:文件夹 results 内的文件已被删除')
             return jsonify({'status' : 'OK' , 'del_path' : 'results'})
         else:
-            return jsonify({'Error': '不是有效的参数'})
+            return jsonify({'Error': '不是有效的参数'}) , 801
 
     except Exception as e:
         # 如果发生错误，返回异常信息
         print("服务端:Python发生错误：" + str(e))
-        return jsonify({'PythonError': str(e)})
+        return jsonify({'PythonError': str(e)})  , 800
 
 # 上传wav文件到raw目录
 # 用法：GET请求
@@ -179,14 +189,21 @@ def upload_wav():
                 shutil.copy(wav_path_upload, 'raw')
                 return jsonify({'status':'OK','upload_file_path': wav_path_upload})
             else:
-                return jsonify({'FileError': '目标文件不存在/非wav文件'})
+                return jsonify({'FileError': '目标文件不存在/非wav文件'}) , 800
         else:
-            return jsonify({'Error': '不是有效的参数'})
+            return jsonify({'Error': '不是有效的参数'}) , 801
 
     except Exception as e:
         # 如果发生错误，返回异常信息
         print("服务端:Python发生错误：" + str(e))
-        return jsonify({'PythonError': str(e)})
+        return jsonify({'PythonError': str(e)}) , 800
+
+# 推理
+# 用法：POST请求
+# 请求参数参考README.md
+# 推理前请先加载模型
+
+
 
 if __name__=='__main__':
     app.run(host='127.0.0.1', port=65503)  # 默认走65503端口，4.0走65504端口

@@ -1,8 +1,9 @@
-<center>
+<div align="center">
 <img src = 'https://s3.bmp.ovh/imgs/2023/07/21/a43006f865b8eaf7.png' >
 <h2>欢迎使用SovitsBox</h2>
 <h3>SovitsBox服务端文档（SovitsBoxAPI）</h3>
-</center>
+</div>
+
 
 
 ## 简介
@@ -48,10 +49,15 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ## API文档
 
-均使用GET方式请求，请求地址：
+除推理使用POST请求外，均使用GET方式请求，请求地址：
 
 - Sovits3.0服务端 127.0.0.1:65503
+
 - Sovits4.0服务端 127.0.0.1:65504
+
+  状态码：`正常 200` `异常 800 ` `不是有效的参数 801`
+
+  
 
 1. 状态
 
@@ -193,5 +199,28 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 | PythonError |   `Python执行错误返回`   | string | 3.0/4.0 |
 |    Error    |      不是有效的参数      | string | 3.0/4.0 |
 |  FileError  | 目标文件不存在/非wav文件 | String | 3.0/4.0 |
+
+6. 推理
+
+推理前请先加载模型！（仅限3.0需要提前加载模型）使用POST请求
+
+请求地址 `/inference`
+
+**由于3.0和4.0的推理方式完全不相同，接下来将分为两个板块来写文档**
+
+#### 3.0
+
+参数：
+
+|      KEY       |                            VALUE                             |  TYPE  | 是否必选 |
+| :------------: | :----------------------------------------------------------: | :----: | :------: |
+| clean_names_ls | `请填入准备推理的wav文件名（无需输入.wav）多文件使用空格转义符号隔开'\'` | string |    是    |
+|   trans_num    | `音高调整，支持正（半）音，填入调整半音数量，无需调整请填入0` |  int   |    是    |
+|  spk_list_ls   | `支持多说话人合成，请填入说话人，多说话人使用空格转义符号隔开'\'` | string |    是    |
+|    slice_db    | `填入slice_db，嘈杂的音频可以-30，干声保留呼吸可以-50 , 无需调整请填入-40` |  int   |    是    |
+|   file_name    | `文件名，有以下参数:{clean_name} 干声文件名 {tran} 音高调整数 {spk} 说话人` | string |    否    |
+|  output_file   |                   `输出文件格式，默认wav`                    | string |    否    |
+
+
 
 ## 开发中...
