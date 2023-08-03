@@ -6,3 +6,7 @@ v3/raw
 v3/results
 
 update/tmp/ver.json
+
+v4/hubert/checkpoint_best_legacy_500.pt
+v4/raw
+v4/results

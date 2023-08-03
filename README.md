@@ -306,7 +306,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ### 使用前提示
 
-SovitsBoxAPI（SovitsBox服务端）仅面向于高级用户使用，若您是小白，请使用SovitsBox。若已知自己没有使用API基础仍要使用，请在遇到问题时自己百度/Google/Bing，我们不予解决任何非程序问题。
+SovitsBoxAPI（SovitsBox服务端）仅面向于高级用户使用，若您是小白，请使用SovitsBoxApp。若已知自己没有使用API基础仍要使用，请在遇到问题时自己百度/Google/Bing，我们不予解决任何非程序问题。
 
 请善用Issues功能，在发起Issues前请务必确认该问题是一个有价值的问题，否则不予解答
 
