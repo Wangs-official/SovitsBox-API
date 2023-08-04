@@ -55,7 +55,9 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 请求地址：3.0为 `127.0.0.1:65503` 4.0为 `127.0.0.1:65504`
 
-1. 状态 (3.0/4.0)
+### 3.0
+
+1. 状态
 
    简要描述
 
@@ -77,7 +79,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
    ```json
    {
-     'status':'200OK'
+     "status":"200OK"
    }
    ```
 
@@ -89,7 +91,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 
 
-2. 下载Hubert模型文件 (3.0/4.0)
+2. 下载Hubert模型文件
 
 简要描述
 
@@ -113,7 +115,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'download_status': 'OK'
+  "download_status": "OK"
 }
 ```
 
@@ -127,7 +129,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'PythonError': 'xxx'
+  "PythonError": "xxx"
 }
 ```
 
@@ -137,7 +139,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 | :---------: | :----: | :------------------: |
 | PythonError | string | Python执行时发生错误 |
 
-3. 删除raw/results文件夹内的所有文件 (3.0/4.0)
+3. 删除raw/results文件夹内的所有文件
 
 简要描述
 
@@ -161,8 +163,8 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'status': 'OK'
-  'del_path': 'raw'
+  "status": "OK",
+  "del_path": "raw"
 }
 ```
 
@@ -177,7 +179,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'PythonError': 'xxx'
+  "PythonError": "xxx"
 }
 ```
 
@@ -189,7 +191,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 异常返回（801）：参数填写错误
 
-4. 上传wav文件到raw文件夹 (3.0/4.0)
+4. 上传wav文件到raw文件夹
 
 简要描述
 
@@ -213,8 +215,8 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'status':'OK'
-  'upload_file_path': '/example/eg.wav'
+  "status":"OK",
+  "upload_file_path": "/example/eg.wav"
 }
 ```
 
@@ -229,7 +231,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'PythonError': 'xxx'
+  "PythonError": "xxx"
 }
 ```
 
@@ -242,7 +244,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 异常返回（801）：参数填写错误
 
-5. 推理 (3.0)
+5. 推理
 
 简要描述
 
@@ -272,8 +274,8 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'status': 'OK', 
-  'output_wav_path': '/results/eg.wav'
+  "status": "OK", 
+  "output_wav_path": "/results/eg.wav"
 }
 ```
 
@@ -288,7 +290,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 ```json
 {
-  'PythonError': 'xxx'
+  "PythonError": "xxx"
 }
 ```
 
@@ -301,6 +303,264 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 | JsonFileError | string | 目标文件不存在/非json文件 |
 
 异常返回（801）：参数填写错误
+
+---
+
+### 4.0
+
+1. 状态
+
+   简要描述
+
+   - 测试接口是否正常
+
+   请求地址
+
+   - `/`
+
+   请求方式
+
+   - GET
+
+   参数
+
+   无
+
+   返回示例
+
+   ```json
+   {
+     "status":"200OK"
+   }
+   ```
+
+   返回参数说明
+
+   | 参数名 |  类型  |      说明       |
+   | :----: | :----: | :-------------: |
+   | status | string | 返回200OK则正常 |
+
+
+
+2. 下载contentvec模型文件
+
+简要描述
+
+- 下载contentvec模型文件
+
+请求地址
+
+- `/download_contentvec`
+
+请求方式
+
+- GET
+
+参数
+
+|  参数名  | 必选 | 类型 |          说明          |
+| :------: | :--: | :--: | :--------------------: |
+| download |  是  | bool | 是否下载，若下载填true |
+
+正常返回示例
+
+```json
+{
+  "download_status": "OK"
+}
+```
+
+正常返回参数说明
+
+|     参数名      |  类型  |     说明     |
+| :-------------: | :----: | :----------: |
+| download_statud | string | 返回OK则正常 |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|   参数名    |  类型  |         说明         |
+| :---------: | :----: | :------------------: |
+| PythonError | string | Python执行时发生错误 |
+
+3. 删除raw/results文件夹内的所有文件
+
+简要描述
+
+- 我怕小白连文件都不会删
+
+请求地址
+
+- `/delete_file`
+
+请求方式
+
+- GET
+
+参数
+
+| 参数名 | 必选 |  类型  |        说明         |
+| :----: | :--: | :----: | :-----------------: |
+|  del   |  是  | string | raw/results任选其一 |
+
+正常返回示例
+
+```json
+{
+  "status": "OK",
+  "del_path": "raw"
+}
+```
+
+正常返回参数说明
+
+|  参数名  |  类型  |       说明       |
+| :------: | :----: | :--------------: |
+|  status  | string |   返回OK则正常   |
+| del_path | string | 删除的是哪个文件 |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|   参数名    |  类型  |         说明         |
+| :---------: | :----: | :------------------: |
+| PythonError | string | Python执行时发生错误 |
+
+异常返回（801）：参数填写错误
+
+4. 上传wav文件到raw文件夹
+
+简要描述
+
+- 我怕小白不会上传文件
+
+请求地址
+
+- `/upload_wav`
+
+请求方式
+
+- GET
+
+参数
+
+|  参数名  | 必选 |  类型  |        说明         |
+| :------: | :--: | :----: | :-----------------: |
+| wav_path |  是  | string | 待上传的Wav文件路径 |
+
+返回示例
+
+```json
+{
+  "status":"OK",
+  "upload_file_path": "/example/eg.wav"
+}
+```
+
+返回参数说明
+
+|      参数名      |  类型  |      说明       |
+| :--------------: | :----: | :-------------: |
+|      status      | string | 返回200OK则正常 |
+| upload_file_path | string | 上传wav文件路径 |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|   参数名    |  类型  |           说明           |
+| :---------: | :----: | :----------------------: |
+| PythonError | string |   Python执行时发生错误   |
+|  FileError  | string | 目标文件不存在/非wav文件 |
+
+异常返回（801）：参数填写错误
+
+5. 推理
+
+简要描述
+
+- 没有
+
+请求地址
+
+- `/inference`
+
+请求方式
+
+- GET
+
+参数
+
+|       参数名        | 必选 |  类型  |                             说明                             |
+| :-----------------: | :--: | :----: | :----------------------------------------------------------: |
+|   clean_names_ls    |  是  | string | 干声路径，支持多个wav文件,请将其放入raw文件夹内，多文件使用半角逗号隔开，无需输入文件扩展名 |
+|      trans_num      |  是  |  int   |           音高调整，支持正（半音），无需调整填入 0           |
+|     spk_list_ls     |  是  | string |                支持多说话人，使用半角逗号隔开                |
+|    slice_db_num     |  是  |  int   |  嘈杂的音频可以-30，干声保留呼吸可以-50 , 无需填入请输入-40  |
+|  output_file_type   |  否  | string |                           默认wav                            |
+|     model_path      |  是  | string |                           模型路径                           |
+|      json_path      |  是  | string |                       Config.json路径                        |
+|     noice_scale     |  否  | string |        噪音级别，会影响咬字和音质，较为玄学，默认0.4         |
+|     pad_seconds     |  否  | string | 推理音频pad秒数，由于未知原因开头结尾会有异响，pad一小段静音段后就不会出现，默认0.5 |
+|   auto_predict_f0   |  否  |  bool  | 语音转换自动预测音高，转换歌声时不要用这个会严重跑调,False/True |
+| cluster_model_path  |  否  | string |             聚类模型路径，如果没有训练聚类就不写             |
+| cluster_infer_ratio |  否  | float  |     聚类方案占比，范围0-1，若没有训练聚类模型则不填即可      |
+
+返回示例
+
+```json
+{
+  "status": "OK", 
+  "output_wav_path": "/results/eg.wav"
+}
+```
+
+返回参数说明
+
+|     参数名      |  类型  |       说明       |
+| :-------------: | :----: | :--------------: |
+|     status      | string | 返回200OK则正常  |
+| output_wav_path | string | 推理后的文件路径 |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|    参数名     |  类型  |           说明            |
+| :-----------: | :----: | :-----------------------: |
+|  PythonError  | string |   Python执行时发生错误    |
+| PthFileError  | string | 目标文件不存在/非pth文件  |
+| JsonFileError | string | 目标文件不存在/非json文件 |
+
+异常返回（801）：参数填写错误
+
+---
 
 ## 使用前提示/用户协议
 
