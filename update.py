@@ -8,7 +8,6 @@ wget.download('https://raw.githubusercontent.com/Wangs-official/SovitsBox-API/ma
 # 下载Github上的版本号文件
 
 input('调用系统git pull origin命令，如果仓库不是克隆下来的话，就不要用了。回车继续')
-
 with open('update/tmp/ver.json') as file_object:
     github_ver_code_origin = file_object.read()
     # 将版本号文件（源内容）存储到github_ver_code_origin变量内

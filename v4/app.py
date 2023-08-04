@@ -124,7 +124,7 @@ def delete_file():
         return jsonify({'PythonError': str(e)}), 800
 
 
-@app.route('/upload_wav', methods=['get'])
+@app.route('/upload_wav', methods=['get,post'])
 def upload_wav():
     try:
         wav_path_upload = request.args.get('wav_path')
