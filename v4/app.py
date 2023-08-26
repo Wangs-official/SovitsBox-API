@@ -285,6 +285,69 @@ def inference():
         print("服务端:Python发生错误：" + str(e))
         return jsonify({'PythonError': str(e)}), 800
 
+@app.route('/update', methods=['GET'])
+def update():
+    try:
+        update_branch = request.args.get('upd-branch')
+        if update_branch == str('main'):
+            # main分支
+            if os.path.isfile('../update/tmp/main/ver.json'):
+                os.remove('../update/tmp/main/ver.json')
+            wget.download('https://raw.githubusercontent.com/Wangs-official/SovitsBox-API/main/update/ver.json',
+                          out='../update/tmp/main/ver.json')
+            # 下载Github上的版本号文件
+            with open('../update/tmp/main/ver.json') as file_object:
+                github_ver_code_origin = file_object.read()
+                # 将版本号文件（源内容）存储到github_ver_code_origin变量内
+            github_ver_code = json.loads(github_ver_code_origin)
+
+            with open('../update/tmp/main/ver.json') as file_object:
+                local_ver_code_origin = file_object.read()
+                # 将本地版本号文件（源内容）存储到local_ver_code_origin变量内
+            local_ver_code = json.loads(local_ver_code_origin)
+
+            print('Github版本号:' + github_ver_code['ver'] + ' \n 本地版本号:' + local_ver_code['ver'])
+            print('=======================================')
+            if github_ver_code == local_ver_code:
+                print('服务端:版本号一致，无需更新')
+                return jsonify({'status':'No need to update','update_branch': update_branch})
+            else:
+                os.system('git pull origin')
+                print('服务端:更新完毕(main分支)')
+                return jsonify({'status':'ok','update_branch': update_branch})
+        elif update_branch == str('dev'):
+            # dev分支
+            if os.path.isfile('../update/tmp/dev/ver.json'):
+                os.remove('../update/tmp/dev/ver.json')
+            wget.download('https://raw.githubusercontent.com/Wangs-official/SovitsBox-API/dev/update/ver.json',
+                          out='../update/tmp/dev/ver.json')
+            # 下载Github上的版本号文件
+            with open('../update/tmp/dev/ver.json') as file_object:
+                github_ver_code_origin_dev = file_object.read()
+                # 将版本号文件（源内容）存储到github_ver_code_origin变量内
+            github_ver_code_dev = json.loads(github_ver_code_origin_dev)
+
+            with open('../update/tmp/dev/ver.json') as file_object:
+                local_ver_code_origin_dev = file_object.read()
+                # 将本地版本号文件（源内容）存储到local_ver_code_origin变量内
+            local_ver_code_dev = json.loads(local_ver_code_origin_dev)
+
+            print('Github版本号:' + github_ver_code_dev['ver'] + ' \n 本地版本号:' + local_ver_code_dev['ver'])
+            print('=======================================')
+            if github_ver_code_dev == local_ver_code_dev:
+                print('服务端:版本号一致，无需更新')
+                return jsonify({'status':'No need to update','update_branch': update_branch})
+            else:
+                os.system('git pull origin')
+                print('服务端:更新完毕(dev分支)')
+                return jsonify({'status':'ok','update_branch': update_branch})
+        else:
+            return jsonify({'Error': '不是有效的参数'}), 801
+    except Exception as e:
+        # 如果发生错误，返回异常信息
+        print("服务端:Python发生错误：" + str(e))
+        return jsonify({'PythonError': str(e)}), 800
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=65504)  # 默认走65504端口，3.0走65503端口

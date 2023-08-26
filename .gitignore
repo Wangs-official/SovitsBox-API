@@ -5,7 +5,8 @@ v3/hubert/hubert-soft-0d54a1f4.pt
 v3/raw
 v3/results
 
-update/tmp/ver.json
+update/tmp/dev/ver.json
+update/tmp/main/ver.json
 
 v4/hubert/checkpoint_best_legacy_500.pt
 v4/raw
