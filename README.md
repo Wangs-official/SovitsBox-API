@@ -203,7 +203,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 请求方式
 
-- GET
+- GET/POST
 
 参数
 
@@ -301,6 +301,58 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 |  PythonError  | string |   Python执行时发生错误    |
 | PthFileError  | string | 目标文件不存在/非pth文件  |
 | JsonFileError | string | 目标文件不存在/非json文件 |
+
+异常返回（801）：参数填写错误
+
+6. 更新
+
+简要描述
+
+- 与update.py一样
+
+请求地址
+
+- `/update`
+
+请求方式
+
+- GET
+
+参数
+
+|   参数名   | 必选 |  类型  |           说明           |
+| :--------: | :--: | :----: | :----------------------: |
+| upd-branch |  是  | string | 望更新的分支（main/dev） |
+
+返回示例
+
+```json
+{
+  "status":"No need to update",
+  "update_branch":"main"
+}
+```
+
+返回参数说明
+
+|    参数名     |  类型  |                        说明                         |
+| :-----------: | :----: | :-------------------------------------------------: |
+|    status     | string | 返回No need to update则表示无需更新，ok表示更新完毕 |
+| update_branch | string |                     更新的分支                      |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|   参数名    |  类型  |         说明         |
+| :---------: | :----: | :------------------: |
+| PythonError | string | Python执行时发生错误 |
 
 异常返回（801）：参数填写错误
 
@@ -454,7 +506,7 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 
 请求方式
 
-- GET
+- GET/POST
 
 参数
 
@@ -557,6 +609,58 @@ SovitsBox分为服务端（SovitsBoxAPI）以及客户端（SovitsBoxAPP）。�
 |  PythonError  | string |   Python执行时发生错误    |
 | PthFileError  | string | 目标文件不存在/非pth文件  |
 | JsonFileError | string | 目标文件不存在/非json文件 |
+
+异常返回（801）：参数填写错误
+
+6. 更新
+
+简要描述
+
+- 与update.py一样
+
+请求地址
+
+- `/update`
+
+请求方式
+
+- GET
+
+参数
+
+|   参数名   | 必选 |  类型  |           说明           |
+| :--------: | :--: | :----: | :----------------------: |
+| upd-branch |  是  | string | 望更新的分支（main/dev） |
+
+返回示例
+
+```json
+{
+  "status":"No need to update",
+  "update_branch":"main"
+}
+```
+
+返回参数说明
+
+|    参数名     |  类型  |                        说明                         |
+| :-----------: | :----: | :-------------------------------------------------: |
+|    status     | string | 返回No need to update则表示无需更新，ok表示更新完毕 |
+| update_branch | string |                     更新的分支                      |
+
+异常返回（800）示例
+
+```json
+{
+  "PythonError": "xxx"
+}
+```
+
+异常返回参数说明
+
+|   参数名    |  类型  |         说明         |
+| :---------: | :----: | :------------------: |
+| PythonError | string | Python执行时发生错误 |
 
 异常返回（801）：参数填写错误
 
